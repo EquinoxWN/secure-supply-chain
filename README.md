@@ -7,6 +7,16 @@
 
 Part of my **DevOps and Cloud** list · Go · YAML · core project
 
+## Proof it works
+
+The service locally (health check, build information, wrong method refused, `nosniff` header), and the image pipeline in GitHub Actions on the latest commit: the image is built, smoke-tested, described by an SBOM and scanned, with no known vulnerability at any severity. The CI results come from the run's public annotations:
+
+![Local curl session and the image workflow's results](docs/proof/run.jpg)
+
+Every action in the workflows is pinned to a full commit SHA, 8 tests pass, and govulncheck finds nothing with Go 1.26.8:
+
+![pinlint, go vet, go test and govulncheck output](docs/proof/tests.jpg)
+
 ## Architecture
 
 **What M1 runs today:**
