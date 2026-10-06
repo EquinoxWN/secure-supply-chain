@@ -3,7 +3,7 @@
 [![ci](https://github.com/EquinoxWN/secure-supply-chain/actions/workflows/ci.yml/badge.svg)](https://github.com/EquinoxWN/secure-supply-chain/actions/workflows/ci.yml)
 ![status](https://img.shields.io/badge/status-M1%20done%2C%20M2%20in%20progress-yellow)
 
-> Stops a tampered or vulnerable image reaching production: every image is scanned, signed and traceable, and the cluster refuses anything else.
+> Stops a vulnerable image reaching production: actions pinned by commit SHA, and every image smoke-tested, described by an SBOM and scanned, with critical CVEs failing the build.
 
 Part of my **DevOps and Cloud** list · Go · YAML · core project
 
@@ -50,11 +50,11 @@ _Steps 1 and 2 are built and tested (M1); the rest is on the [roadmap](#roadmap)
 
 ## Tech stack
 
-| Area | Tools |
-|---|---|
-| Build | GitHub Actions pinned by SHA, Docker Buildx |
-| Inspect/Sign | Syft SBOM, Grype scan, Sigstore cosign keyless, slsa-github-generator |
-| Enforce | Kyverno verifyImages admission policy on Kubernetes |
+| Area | In M1 | Planned |
+|---|---|---|
+| Build | GitHub Actions pinned by SHA (checked by `pinlint`), Docker Buildx, distroless image | - |
+| Inspect | Syft SBOM, Grype scan | - |
+| Sign / enforce | - | Sigstore cosign keyless, slsa-github-generator, Kyverno verifyImages |
 
 Language: **Go · YAML** (Go standard library only).
 
@@ -150,7 +150,7 @@ What this repo must show before it counts as done:
 ## Why it matters
 
 - **Interview angle:** 'Secure a CI/CD pipeline end to end'.
-- **Upstream I'm contributing to:** Sigstore cosign or Kyverno.
+- **Upstream I'd like to contribute to:** Sigstore cosign or Kyverno.
 
 ## Design docs
 
