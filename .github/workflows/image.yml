@@ -42,6 +42,7 @@ jobs:
           for i in $(seq 1 20); do curl -fsS localhost:8080/healthz && break; sleep 1; done
           curl -fsS localhost:8080/version | tee version.json
           grep -q "$GITHUB_SHA" version.json
+          echo "::notice title=Smoke test::GET /version -> $(tr -d '\n' < version.json)"
           docker rm -f app
 
       - name: Generate SBOM with Syft
@@ -65,15 +66,18 @@ jobs:
       - name: Summarise findings
         if: always()
         run: |
-          python3 - <<'EOF' >> "$GITHUB_STEP_SUMMARY"
-          import json, collections, pathlib
-          p = pathlib.Path("grype.json")
+          python3 - <<'EOF'
+          import collections, json, os, pathlib
+          p, sbom = pathlib.Path("grype.json"), pathlib.Path("sbom.spdx.json")
           if not p.exists():
-              print("Grype produced no report."); raise SystemExit
+              print("::warning title=Grype scan::Grype produced no report."); raise SystemExit
           counts = collections.Counter(m["vulnerability"]["severity"] for m in json.loads(p.read_text())["matches"])
-          print("| Severity | Count |\n|---|---|")
-          for sev in ("Critical", "High", "Medium", "Low", "Negligible", "Unknown"):
-              print(f"| {sev} | {counts.get(sev, 0)} |")
+          sevs = ("Critical", "High", "Medium", "Low", "Negligible", "Unknown")
+          packages = len(json.loads(sbom.read_text()).get("packages", [])) if sbom.exists() else 0
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
+              f.write("| Severity | Count |\n|---|---|\n" + "".join(f"| {s} | {counts.get(s, 0)} |\n" for s in sevs))
+          # Unlike the log, an annotation can be read on the run page without signing in.
+          print(f"::notice title=Grype scan::{packages} packages in the SBOM; " + ", ".join(f"{s} {counts.get(s, 0)}" for s in sevs))
           EOF
 
       - name: Upload SBOM and scan report
