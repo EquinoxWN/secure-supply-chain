@@ -48,6 +48,12 @@ _Steps 1 and 2 are built and tested (M1); the rest is on the [roadmap](#roadmap)
 5. In the cluster, a Kyverno verifyImages policy admits only images signed by your workflow identity with valid provenance.
 6. A demo pushes an unsigned, tampered image and shows the admission webhook rejecting it.
 
+## Who it helps
+
+- **Who:** Teams shipping container images with GitHub Actions.
+- **The problem:** A mutable action tag or an unscanned image lets compromised or vulnerable code reach production.
+- **How to use it:** Run `pinlint` to fail any workflow that uses an action without a full commit SHA, and copy the image workflow, which builds, smoke-tests, writes an SBOM and fails on critical CVEs.
+
 ## Tech stack
 
 | Area | In M1 | Planned |
