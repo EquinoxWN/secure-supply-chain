@@ -13,7 +13,7 @@ The service locally (health check, build information, wrong method refused, `nos
 
 ![Local curl session and the image workflow's results](docs/proof/run.jpg)
 
-Every action in the workflows is pinned to a full commit SHA, 8 tests pass, and govulncheck finds nothing with Go 1.26.8:
+Every action in the workflows is pinned to a full commit SHA, 8 tests pass, and govulncheck finds nothing with Go 1.26.9:
 
 ![pinlint, go vet, go test and govulncheck output](docs/proof/tests.jpg)
 
@@ -171,7 +171,7 @@ This is a learning and portfolio system, not a hosted production service. Everyt
 ## Security and contributing
 
 - Every GitHub Action is pinned to a commit SHA; workflows run read-only, without persisted credentials.
-- Dependabot proposes dependency and action updates weekly.
+- Dependabot update pull requests are paused (`open-pull-requests-limit: 0`) so the repository keeps a single `main` branch; dependencies are updated by hand and checked by the CI audit.
 - `pinlint`, `go vet`, `gofmt` and `govulncheck` on every push; the image is digest-pinned, scanned by Grype and ships an SBOM.
 - Report vulnerabilities privately: see [SECURITY.md](SECURITY.md). To contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
