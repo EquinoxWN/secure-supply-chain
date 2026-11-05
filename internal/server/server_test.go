@@ -33,6 +33,9 @@ func TestVersionReportsBuild(t *testing.T) {
 	if rec.Header().Get("Content-Type") != "application/json" {
 		t.Fatalf("content type %q", rec.Header().Get("Content-Type"))
 	}
+	if rec.Header().Get("X-Content-Type-Options") != "nosniff" {
+		t.Fatalf("X-Content-Type-Options %q, want nosniff", rec.Header().Get("X-Content-Type-Options"))
+	}
 }
 
 func TestUnknownRoutesAndMethods(t *testing.T) {

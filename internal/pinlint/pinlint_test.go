@@ -23,6 +23,9 @@ func TestClassify(t *testing.T) {
 		{"actions/checkout@" + strings.ToUpper(sha), false}, // tags can look like SHAs; require lowercase hex
 		{"docker://alpine:3.20", false},
 		{"docker://alpine@sha256:abc", false},
+		{"actions/checkout@" + sha + "-rc", false}, // a tag that starts with a SHA is still a tag
+		{".evil/checkout@v4", false},               // only ./ paths are local actions
+		{"../outside/action", false},               // GitHub does not resolve ../ as a local action
 	}
 	for _, c := range cases {
 		if got := classify(c.ref) == ""; got != c.safe {

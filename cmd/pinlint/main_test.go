@@ -27,6 +27,17 @@ func TestUnpinnedWorkflowIsCounted(t *testing.T) {
 	}
 }
 
+func TestYamlExtensionIsChecked(t *testing.T) {
+	dir := t.TempDir()
+	wf := "jobs:\n  a:\n    steps:\n      - uses: actions/setup-go@v5\n"
+	if err := os.WriteFile(filepath.Join(dir, "release.yaml"), []byte(wf), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if n, err := run(dir); err != nil || n != 1 {
+		t.Fatalf("got n=%d err=%v, want the .yaml workflow checked", n, err)
+	}
+}
+
 func TestEmptyDirectoryIsAnError(t *testing.T) {
 	if _, err := run(t.TempDir()); err == nil {
 		t.Fatal("a directory without workflows must be reported, not silently pass")

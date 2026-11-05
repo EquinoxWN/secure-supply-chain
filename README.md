@@ -13,7 +13,7 @@ The service locally (health check, build information, wrong method refused, `nos
 
 ![Local curl session and the image workflow's results](docs/proof/run.jpg)
 
-Every action in the workflows is pinned to a full commit SHA, 8 tests pass, and govulncheck finds nothing with Go 1.26.10:
+Every action in the workflows is pinned to a full commit SHA, 9 tests pass, and govulncheck finds nothing with Go 1.26.10:
 
 ![pinlint, go vet, go test and govulncheck output](docs/proof/tests.jpg)
 
@@ -87,7 +87,7 @@ make image    # build the container locally (Docker Buildx)
 Run the service without Docker:
 
 ```bash
-go run ./cmd/secure-supply-chain   # then: curl localhost:8080/version
+go run ./cmd/secure-supply-chain   # then: curl localhost:8080/version (listen address: ADDR, default :8080)
 ```
 
 The full pipeline (build, SBOM, vulnerability gate) runs in GitHub Actions on every push and pull request; the SBOM and scan report are attached to each run as the `sbom-and-scan` artifact.
@@ -98,7 +98,7 @@ Latest local run (full detail, including every pinned SHA and digest, in [docs/r
 
 | Check | Result |
 |---|---|
-| Unit tests | 8 passed, 0 failed |
+| Unit tests | 9 passed, 0 failed |
 | Unpinned action references (`make pinlint`) | 0 in 2 workflows |
 | Workflow syntax (`actionlint` v1.7.7) | no errors |
 | Base images | pinned by `sha256` digest |
@@ -106,20 +106,25 @@ Latest local run (full detail, including every pinned SHA and digest, in [docs/r
 
 The container steps (Buildx build, smoke test, Syft SBOM, Grype critical-CVE gate) run in GitHub Actions; their results appear in each run's job summary.
 
+The 10 quality rules and the mutation check are recorded in [docs/quality/2026-11-01.md](docs/quality/2026-11-01.md).
+
 ### Test map
 
 ```mermaid
 mindmap
-  root((8 tests pass))
+  root((9 tests pass))
     pinlint
       SHA pins, local and digest refs pass
       tags, branches, short SHAs fail
+      SHA-prefixed tags and ../ paths fail
       exact line numbers
       own workflows stay pinned
       empty folder is an error
+      .yaml workflows checked too
     Service
       healthz
       version shows build commit
+      nosniff header
       404 and 405 handling
     CI only
       image build and smoke test

@@ -33,5 +33,6 @@ func New(info BuildInfo) http.Handler {
 func writeJSON(w http.ResponseWriter, v any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("X-Content-Type-Options", "nosniff")
+	// Encoding these small values only fails when the client has gone; there is nothing to send.
 	_ = json.NewEncoder(w).Encode(v)
 }
