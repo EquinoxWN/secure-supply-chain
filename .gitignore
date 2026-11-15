@@ -21,3 +21,4 @@ CLAUDE.md
 .m2/
 .gocache/
 .gomodcache/
+.gopath/

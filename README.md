@@ -13,7 +13,7 @@ The service locally (health check, build information, wrong method refused, `nos
 
 ![Local curl session and the image workflow's results](docs/proof/run.jpg)
 
-Every action in the workflows is pinned to a full commit SHA, 9 tests pass, and govulncheck finds nothing with Go 1.26.10:
+Every action in the workflows is pinned to a full commit SHA, 9 tests pass, and govulncheck finds nothing with Go 1.26.11:
 
 ![pinlint, go vet, go test and govulncheck output](docs/proof/tests.jpg)
 
