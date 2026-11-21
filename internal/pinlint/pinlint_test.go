@@ -62,3 +62,20 @@ jobs:
 		t.Errorf("String() = %q", got[0].String())
 	}
 }
+
+func TestCheckFlowAndQuotedKeys(t *testing.T) {
+	workflow := `jobs:
+  build:
+    steps:
+      - {uses: actions/checkout@v4, with: {fetch-depth: 0}}
+      - "uses": actions/setup-go@v5
+      - 'uses': actions/cache@` + sha + `
+`
+	got, err := Check(strings.NewReader(workflow), "ci.yml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 2 || got[0].Ref != "actions/checkout@v4" || got[1].Ref != "actions/setup-go@v5" {
+		t.Fatalf("got %v, want flow-style and quoted-key references reported", got)
+	}
+}

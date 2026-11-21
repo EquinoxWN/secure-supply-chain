@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	usesLine = regexp.MustCompile(`^\s*(?:-\s*)?uses:\s*["']?([^"'\s#]+)`)
+	usesLine = regexp.MustCompile(`^\s*(?:-\s*)?(?:\{\s*)?["']?uses["']?\s*:\s*["']?([^"'\s#,}]+)`)
 	pinned   = regexp.MustCompile(`^[\w.-]+/[\w.-]+(?:/[\w./-]+)?@[0-9a-f]{40}$`)
 	digest   = regexp.MustCompile(`^docker://[^@]+@sha256:[0-9a-f]{64}$`)
 )
