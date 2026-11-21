@@ -13,7 +13,7 @@ The service locally (health check, build information, wrong method refused, `nos
 
 ![Local curl session and the image workflow's results](docs/proof/run.jpg)
 
-Every action in the workflows is pinned to a full commit SHA, 9 tests pass, and govulncheck finds nothing with Go 1.26.11:
+Every action in the workflows is pinned to a full commit SHA, 10 tests pass, and govulncheck finds nothing with Go 1.26.11:
 
 ![pinlint, go vet, go test and govulncheck output](docs/proof/tests.jpg)
 
@@ -98,7 +98,7 @@ Latest local run (full detail, including every pinned SHA and digest, in [docs/r
 
 | Check | Result |
 |---|---|
-| Unit tests | 9 passed, 0 failed |
+| Unit tests | 10 passed, 0 failed |
 | Unpinned action references (`make pinlint`) | 0 in 2 workflows |
 | Workflow syntax (`actionlint` v1.7.7) | no errors |
 | Base images | pinned by `sha256` digest |
@@ -112,7 +112,7 @@ The 10 quality rules and the mutation check are recorded in [docs/quality/2026-1
 
 ```mermaid
 mindmap
-  root((9 tests pass))
+  root((10 tests pass))
     pinlint
       SHA pins, local and digest refs pass
       tags, branches, short SHAs fail
